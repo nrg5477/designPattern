@@ -2,9 +2,15 @@ import adapter.Cleaner;
 import adapter.Electronic110V;
 import adapter.HairDryer;
 import adapter.SocketAdapter;
+import aop.AopBrowser;
+import proxy.Browser;
+import proxy.BrowserProxy;
+import proxy.Ibrowser;
 import sigleton.AClazz;
 import sigleton.BClazz;
 import sigleton.SocketClient;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Main {
     public static void main(String[] args) {
@@ -19,13 +25,42 @@ public class Main {
 //        socketClient1.connect();
 //        socketClient2.connect();
 
-        HairDryer hairDryer = new HairDryer();
-        connect(hairDryer);
+//        HairDryer hairDryer = new HairDryer();
+//        connect(hairDryer);
+//
+//        Cleaner cleaner = new Cleaner();
+////        connect(cleaner);
+//        Electronic110V adapter = new SocketAdapter(cleaner);
+//        connect(adapter);
 
-        Cleaner cleaner = new Cleaner();
-//        connect(cleaner);
-        Electronic110V adapter = new SocketAdapter(cleaner);
-        connect(adapter);
+//        Browser browser = new Browser("www.naver.com");
+//        browser.show();
+//        browser.show();
+//        browser.show();
+//        browser.show();
+//        Ibrowser ibrowser = new BrowserProxy("www.naver.com");
+//        ibrowser.show();
+//        ibrowser.show();
+//        ibrowser.show();
+//        ibrowser.show();
+//        ibrowser.show();
+
+        AtomicLong start = new AtomicLong();
+        AtomicLong end = new AtomicLong();
+
+        Ibrowser aopBrowser = new AopBrowser("www.naver.com",
+                ()->{
+                    System.out.println("before");
+                    start.set(System.currentTimeMillis());
+                },
+                ()->{
+                    long now = System.currentTimeMillis();
+                    end.set(now - start.get());
+                });
+        aopBrowser.show();
+        System.out.println("loading time : " + end.get());
+        aopBrowser.show();
+        System.out.println("loading time : " + end.get());
     }
 
 
