@@ -16,6 +16,7 @@ import proxy.Ibrowser;
 import sigleton.AClazz;
 import sigleton.BClazz;
 import sigleton.SocketClient;
+import strategy.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -93,26 +94,46 @@ public class Main {
 //        button.click("메시지2");
 //        button.click("메시지3");
 
-//        Ftp ftpClient = new Ftp("www.foo.co.kr", 22, "home/etc");
-//        ftpClient.connect();
-//        ftpClient.moveDirectory();
-//        Writer writer = new Writer("text.tmp");
-//        writer.fileConnect();
-//        writer.write();
-//        Reader reader = new Reader("text.tmp");
-//        reader.fileConnect();
-//        reader.fileRead();
-//
-//        reader.fileDisconnect();
-//        writer.fileDisconnect();
-//        ftpClient.disConnect();
-        //-->
-        SftpClient sftpClient = new SftpClient("www.foo.co.kr", 22, "home/etc", "text.tmp");
-        sftpClient.connect();
-        sftpClient.write();
-        sftpClient.read();
-        sftpClient.disconnect();
+////        Ftp ftpClient = new Ftp("www.foo.co.kr", 22, "home/etc");
+////        ftpClient.connect();
+////        ftpClient.moveDirectory();
+////        Writer writer = new Writer("text.tmp");
+////        writer.fileConnect();
+////        writer.write();
+////        Reader reader = new Reader("text.tmp");
+////        reader.fileConnect();
+////        reader.fileRead();
+////
+////        reader.fileDisconnect();
+////        writer.fileDisconnect();
+////        ftpClient.disConnect();
+//        //-->
+//        SftpClient sftpClient = new SftpClient("www.foo.co.kr", 22, "home/etc", "text.tmp");
+//        sftpClient.connect();
+//        sftpClient.write();
+//        sftpClient.read();
+//        sftpClient.disconnect();
+        Encoder encoder = new Encoder();
+        //base64
+        EncodingStrategy base64 = new Base64Stategy();
+        //normal
+        EncodingStrategy normal = new NormalStrategy();
 
+        String message = "hello java";
+
+        encoder.setEncodingStrategy(base64);
+        String base64Result = encoder.getMessage(message);
+        System.out.println(base64Result);
+
+        encoder.setEncodingStrategy(normal);
+        String normalResult = encoder.getMessage(message);
+        System.out.println(normalResult);
+
+        //Append
+        EncodingStrategy append = new AppendStrategy();
+        encoder.setEncodingStrategy(append);
+        String appendResult = encoder.getMessage(message);
+        System.out.println(appendResult);
 
     }
 
